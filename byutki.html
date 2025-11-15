@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Happy Birthday Butki 🎉</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;800&display=swap');
+    html,body{
+        height:100%;
+        margin:0;
+        font-family:'Poppins',sans-serif;
+        background:linear-gradient(135deg,#fff1f6,#ffece0);
+    }
+
+    .wrap{
+        min-height:100%;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        padding:30px;
+    }
+
+    .card{
+        width:780px;
+        max-width:95%;
+        background:rgba(255,255,255,0.85);
+        border-radius:20px;
+        box-shadow:0 12px 40px rgba(0,0,0,0.12);
+        padding:30px;
+        position:relative;
+        overflow:hidden;
+        text-align:center;
+        display:none; /* hidden before unlock */
+    }
+
+    h1{margin:6px 0;font-size:40px;color:#ff3b6b;font-weight:800;}
+    h2{margin:6px 0;font-size:22px;color:#333;font-weight:600;}
+    p{color:#555;font-size:16px;line-height:1.45;margin:12px 0 18px;}
+
+    /* Countdown box */
+    #countdown-box{
+        text-align:center;
+        padding:30px;
+        font-family:'Poppins',sans-serif;
+    }
+    #countdown{
+        font-size:40px;
+        font-weight:700;
+        color:#ff3b6b;
+    }
+    #count-label{
+        font-size:20px;
+        font-weight:500;
+        color:#333;
+        margin-top:10px;
+    }
+
+    /* Sibling animation */
+    .sibling-box{
+        width:220px;
+        margin:0 auto 15px;
+        animation:float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%{transform:translateY(0px);}
+      50%{transform:translateY(-12px);}
+      100%{transform:translateY(0px);}
+    }
+
+    /* Confetti */
+    .confetti {pointer-events:none;position:absolute;inset:0;overflow:hidden;}
+    .piece{
+        width:12px;
+        height:18px;
+        position:absolute;
+        opacity:0.95;
+        transform-origin:center;
+        animation:fall 3.5s linear infinite;
+    }
+    @keyframes fall {
+      0%{transform:translateY(-20vh) rotate(0);opacity:1}
+      100%{transform:translateY(120vh) rotate(720deg);opacity:0.9}
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- COUNTDOWN SCREEN -->
+<div id="countdown-box">
+    <div id="countdown">Loading…</div>
+    <div id="count-label">Birthday surprise unlocks on 16 November 2025 🎉</div>
+</div>
+
+<!-- MAIN BIRTHDAY CARD -->
+<div class="wrap">
+  <div class="card" id="main-card">
+
+    <!-- Bhai Behan Animated Box -->
+    <div class="sibling-box">
+      <svg width="220" height="180" viewBox="0 0 220 180" xmlns="http://www.w3.org/2000/svg">
+
+        <!-- Boy -->
+        <circle cx="70" cy="50" r="28" fill="#ffe0c7"/>
+        <circle cx="60" cy="45" r="5" fill="#000"/>
+        <circle cx="80" cy="45" r="5" fill="#000"/>
+        <rect x="58" y="65" width="25" height="35" rx="8" fill="#4b7bec"/>
+        <rect x="62" y="100" width="8" height="35" fill="#2d98da"/>
+        <rect x="71" y="100" width="8" height="35" fill="#2d98da"/>
+
+        <!-- Girl -->
+        <circle cx="150" cy="50" r="28" fill="#ffe0c7"/>
+        <circle cx="140" cy="45" r="5" fill="#000"/>
+        <circle cx="160" cy="45" r="5" fill="#000"/>
+        <path d="M122 50 Q150 10 178 50" fill="#ff99c8"/>
+        <rect x="138" y="65" width="25" height="35" rx="8" fill="#ff6fa8"/>
+        <rect x="142" y="100" width="8" height="35" fill="#ff5c8a"/>
+        <rect x="151" y="100" width="8" height="35" fill="#ff5c8a"/>
+
+      </svg>
+    </div>
+
+    <h1>Happy Birthday Butki 🎉</h1>
+    <h2>You are the sweetest sister ever!</h2>
+    <p>
+      Wishing you all the joy, love, laughter and happiness.<br>
+      May your year be filled with beautiful surprises and success. ❤️
+    </p>
+
+    <div class="confetti" id="confetti"></div>
+  </div>
+</div>
+
+<script>
+  // Set unlock date
+  const unlockDate = new Date("November 16, 2025 00:00:00").getTime();
+
+  const countdownElem = document.getElementById("countdown");
+  const card = document.getElementById("main-card");
+  const countdownBox = document.getElementById("countdown-box");
+
+  // Timer interval
+  const timer = setInterval(() => {
+      const now = new Date().getTime();
+      const diff = unlockDate - now;
+
+      if (diff <= 0) {
+          clearInterval(timer);
+          countdownBox.style.display = "none";
+          card.style.display = "block";
+          startConfetti();
+          return;
+      }
+
+      // Time calculations
+      const days = Math.floor(diff / (1000*60*60*24));
+      const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+      const minutes = Math.floor((diff % (1000*60*60)) / (1000*60));
+      const seconds = Math.floor((diff % (1000*60)) / 1000);
+
+      countdownElem.innerHTML =
+          `${days}d : ${hours}h : ${minutes}m : ${seconds}s`;
+  }, 1000);
+
+  // Confetti generator
+  function startConfetti(){
+      const confetti = document.getElementById("confetti");
+      for(let i=0;i<90;i++){
+          const piece = document.createElement("div");
+          piece.classList.add("piece");
+          piece.style.left = Math.random()*100+"%";
+          piece.style.background = `hsl(${Math.random()*360},80%,60%)`;
+          piece.style.animationDelay = Math.random()*2+"s";
+          confetti.appendChild(piece);
+      }
+  }
+</script>
+
+</body>
+</html>
